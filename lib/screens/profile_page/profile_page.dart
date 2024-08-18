@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:demoapp/screens/home_page/home_page.dart';
 import 'package:demoapp/screens/profile_page/pages/edit_page.dart';
@@ -16,6 +17,7 @@ class _DisplayPageState extends State<DisplayPage> {
   String _textField1 = '';
   String _textField2 = '';
   File? _imageFile;
+  Uint8List? _image;
 
   @override
   void initState() {
@@ -23,16 +25,16 @@ class _DisplayPageState extends State<DisplayPage> {
     _loadValues();
   }
 
-  // Future<void> _pickImage() async {
-  //   final XFile? image =
-  //       await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
-  //   if (image != null) {
-  //     setState(() {
-  //       File imageFile = File(image.path);
-  //     });
-  //   }
-  // }
+    if (image != null) {
+      setState(() {
+        _imageFile = File(image.path);
+        _image = File(image.path).readAsBytesSync();
+      });
+    }
+  }
 
   void _loadValues() async {
     final prefs = await SharedPreferences.getInstance();
@@ -68,33 +70,56 @@ class _DisplayPageState extends State<DisplayPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // _imageFile != null
-                //     ? Image.file(
-                //         _imageFile!,
-                //         height: 300,
-                //         width: 300,
-                //         fit: BoxFit.cover,
-                //       )
-                //     : Icon(
-                //         Icons.image,
-                //         size: 300,
-                //         color: Colors.grey[400],
-                //       ),
                 Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
-                      "https://imgs.search.brave.com/xFkz2rHVRFxHB3pOHKPh-9VUyP9DKszbVpTUzIP9HvM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvY29vbC1wcm9m/aWxlLXBpY3R1cmUt/ODdoNDZnY29iamw1/ZTR4dS5qcGc",
-                      height: 175,
-                      width: 175,
-                    ),
+                  child: Stack(
+                    children: [
+                      _image != null
+                          ? Center(
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundImage: MemoryImage(_image!),
+                              ),
+                            )
+                          : Icon(
+                              Icons.image,
+                              size: 300,
+                              color: Colors.grey[400],
+                            ),
+                      Positioned(
+                        bottom: -10,
+                        right: 160,
+                        child: Center(
+                          // child: Icon(
+                          //   Icons.add_a_photo,
+                          //   size: 20,
+                          // ),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.add_a_photo,
+                              size: 20,
+                              color: Colors.black,
+                            ),
+                            onPressed: _pickImage,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
+
+                // Center(
+                //   child: ClipRRect(
+                //     borderRadius: BorderRadius.circular(100),
+                //     child: Image.network(
+                //       "https://imgs.search.brave.com/xFkz2rHVRFxHB3pOHKPh-9VUyP9DKszbVpTUzIP9HvM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvY29vbC1wcm9m/aWxlLXBpY3R1cmUt/ODdoNDZnY29iamw1/ZTR4dS5qcGc",
+                //       height: 175,
+                //       width: 175,
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed:
-                      // _pickImage,
-                      _editValues,
+                  onPressed: _editValues,
                   child: Text('Edit'),
                 ),
                 SizedBox(height: 20),
