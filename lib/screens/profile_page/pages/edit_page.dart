@@ -27,8 +27,8 @@ class _InputPageState extends State<InputPage> {
   // Save values to SharedPreferences
   void _saveValues() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('textField1', _nameController.text);
-    await prefs.setString('textField2', _emailController.text);
+    await prefs.setString('name', _nameController.text);
+    await prefs.setString('email', _emailController.text);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => BottomNavigationPage()),

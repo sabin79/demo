@@ -31,25 +31,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Post>>(
-      future: futurePosts,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No posts available'));
-        }
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Home Page'),
+      ),
+      body: FutureBuilder<List<Post>>(
+        future: futurePosts,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No posts available'));
+          }
 
-        List<Post> posts = snapshot.data!;
+          List<Post> posts = snapshot.data!;
 
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text('Home Page'),
-          ),
-          body: ListView.builder(
+          return ListView.builder(
             itemCount: posts.length,
             itemBuilder: (context, index) {
               return Padding(
@@ -78,9 +78,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
