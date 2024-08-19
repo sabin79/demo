@@ -14,8 +14,8 @@ class DisplayPage extends StatefulWidget {
 }
 
 class _DisplayPageState extends State<DisplayPage> {
-  String _textField1 = '';
-  String _textField2 = '';
+  String _name = '';
+  String _email = '';
   File? _imageFile;
   Uint8List? _image;
 
@@ -40,8 +40,8 @@ class _DisplayPageState extends State<DisplayPage> {
     final prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      _textField1 = prefs.getString('textField1') ?? '';
-      _textField2 = prefs.getString('textField2') ?? '';
+      _name = prefs.getString('name') ?? '';
+      _email = prefs.getString('email') ?? '';
     });
   }
 
@@ -51,8 +51,8 @@ class _DisplayPageState extends State<DisplayPage> {
       context,
       MaterialPageRoute(
         builder: (context) => InputPage(
-          initialText1: _textField1,
-          initialText2: _textField2,
+          name: _name,
+          email: _email,
         ),
       ),
     );
@@ -124,12 +124,12 @@ class _DisplayPageState extends State<DisplayPage> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "name : $_textField1",
+                  "name : $_name",
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "email : $_textField2",
+                  "email : $_email",
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(height: 10),
@@ -140,7 +140,7 @@ class _DisplayPageState extends State<DisplayPage> {
                     },
                     child: Text("See Your post ")),
                 SizedBox(height: 10),
-                _textField1.isNotEmpty && _textField2.isNotEmpty
+                _name.isNotEmpty && _email.isNotEmpty
                     ? SizedBox()
                     : Text(
                         "Please edit your profile",

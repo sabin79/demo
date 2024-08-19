@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InputPage extends StatefulWidget {
-  final String initialText1;
-  final String initialText2;
+  final String name;
+  final String email;
 
-  InputPage({this.initialText1 = '', this.initialText2 = ''});
+  InputPage({this.name = '', this.email = ''});
 
   @override
   _InputPageState createState() => _InputPageState();
@@ -20,8 +20,8 @@ class _InputPageState extends State<InputPage> {
   void initState() {
     super.initState();
     // Initialize controllers with provided values
-    _nameController.text = widget.initialText1;
-    _emailController.text = widget.initialText2;
+    _nameController.text = widget.name;
+    _emailController.text = widget.email;
   }
 
   // Save values to SharedPreferences
